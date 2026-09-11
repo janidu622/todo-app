@@ -1,46 +1,32 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [input, setInput] = useState('');
+  const [task, setTask] = useState("");
+  const [todos, setTodos] = useState([]);
 
-  function addTask() {
-    if (input.trim() === '') return;
-    setTasks([...tasks, { id: Date.now(), text: input, done: false }]);
-    setInput('');
+  function addTodo() {
+    const newCard = { id: Date.now(), text: task };
+    setTodos([...todos, newCard]);
+    setTask("");
   }
 
-  function deleteTask(id) {
-    setTasks(tasks.filter(task => task.id !== id));
-  }
-
-  function toggleTask(id) {
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, done: !task.done } : task
-    ));
+  function deleteTodo(id) {
+    setTodos(todos.filter((todo) => todo.id !== id));
   }
 
   return (
     <div>
-      <h1>My Tasks</h1>
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Enter a task"
-      />
-      <button onClick={addTask}>Add</button>
+      <h1>Todo List</h1>
 
-      <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
-            <span style={{ textDecoration: task.done ? 'line-through' : 'none' }}>
-              {task.text}
-            </span>
-            <button onClick={() => toggleTask(task.id)}>Done</button>
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <input value={task} onChange={(e) => setTask(e.target.value)} />
+      <button onClick={addTodo}>Add</button>
+
+      {todos.map((todo) => (
+        <p key={todo.id}>
+          {todo.text}
+          <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+        </p>
+      ))}
     </div>
   );
 }
